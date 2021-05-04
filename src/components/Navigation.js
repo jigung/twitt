@@ -3,7 +3,6 @@ import { Link } from "react-router-dom";
 
 const Navigation = () => (
   <nav>
-    lalala
     <ul>
       <li>
         <Link to="/">Home</Link>

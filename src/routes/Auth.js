@@ -1,6 +1,7 @@
 // from react 는 라이브러리. 앞에는 그 from 에 있는 속에 함수를 부르는 것임....
 import React, { useState } from "react";
 import { authService, firebaseInstance } from "myBase";
+import styled from "styled-components";
 
 // usestate 이메일, 패스워드 입력.
 const Auth = () => {
@@ -22,14 +23,14 @@ const Auth = () => {
       setPassword(value);
     }
   };
-
+  // 온서브밋 폼의 값을 전송하기 전에 어떤 작업을 하게 만들기.
+  // 쉽게 말하면 로그인 하기전에 비번 아이디 맞는지 틀린지 확인 검수 가능하다는거
   const onSubmit = async (event) => {
     event.preventDefault();
     try {
       let data;
       if (newAccount) {
-        // 계정을 생성하기
-
+        // 계정을 생성하기 async랑 await는 붙어있는 존재 (promise문)
         data = await authService.createUserWithEmailAndPassword(
           email,
           password
