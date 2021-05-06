@@ -16,4 +16,6 @@ firebase.initializeApp(firebaseConfig);
 export const firebaseInstance = firebase;
 
 export const authService = firebase.auth();
+//auth => 인증
 export const dbService = firebase.firestore();
+//dbservice 파이어 스토어에 데이터 전송.

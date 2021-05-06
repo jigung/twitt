@@ -1,29 +1,29 @@
 import React, { useState, useEffect } from "react";
 import { dbService } from "myBase";
+import Twitt from "../components/Twitt";
 
-const Home = () => {
+const Home = ({ userObj }) => {
   const [twitt, setTwitt] = useState("");
   const [twitts, setTwitts] = useState([]);
-  const getTwitts = async () => {
-    const dbTwitts = await dbService.collection("twitts").get();
-    dbTwitts.forEach((document) => {
-      const twittObject = {
-        ...document.data(),
-        id: document.id,
-      };
-      setTwitts((prev) => [twittObject, ...prev]);
-    });
-  };
+  // const set twitts => firestroe에 twitts data 전송.
+  // const get twitts => firestore에 twitts 컬렉션 자동으로 얻기.
 
   useEffect(() => {
-    getTwitts();
+    dbService.collection("twitts").onSnapshot((snapshot) => {
+      const twittArray = snapshot.docs.map((doc) => ({
+        id: doc.id,
+        ...doc.data(),
+      }));
+      setTwitts(twittArray);
+    });
   }, []);
 
   const onSubmit = async (event) => {
     event.preventDefault();
     await dbService.collection("twitts").add({
-      twitt,
+      text: twitt,
       createdAt: Date.now(),
+      creatorId: userObj.uid,
     });
     setTwitt("");
   };
@@ -37,6 +37,7 @@ const Home = () => {
 
   return (
     <div>
+      {/* what do you do? twitt 창 */}
       <form onSubmit={onSubmit}>
         <input
           value={twitt}
@@ -47,11 +48,14 @@ const Home = () => {
         />
         <input type="submit" value="Push Twitt" />
       </form>
+      {/* / twitt.twitt 웹 페이지에 twitt 이 나오는 멘트 css 할떄 참고~ */}
       <div>
         {twitts.map((twitt) => (
-          <div key={twitt.id}>
-            <h4>{twitt.twitt}</h4>
-          </div>
+          <Twitt
+            key={twitt.id}
+            twittObj={twitt}
+            isOwner={twitt.creatorId === userObj.uid}
+          />
         ))}
       </div>
     </div>

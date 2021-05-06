@@ -1,7 +1,7 @@
 // from react 는 라이브러리. 앞에는 그 from 에 있는 속에 함수를 부르는 것임....
+//auth 는 인증이라는 뜻을 가지고 있다.
 import React, { useState } from "react";
 import { authService, firebaseInstance } from "myBase";
-import styled from "styled-components";
 
 // usestate 이메일, 패스워드 입력.
 const Auth = () => {
