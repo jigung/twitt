@@ -45,17 +45,17 @@ const Auth = () => {
     }
   };
   const toggleAccount = () => setNewAccount((prev) => !prev);
-  const onSociaClick = async (event) => {
+  const onSociaClick = (event) => {
     const {
       target: { name },
     } = event;
-    let provider;
+    let provider; //로그인 방법 구글 및 깃허브 함수임. -> 이게 온 소셜클릭임.
     if (name === "google") {
       provider = new firebaseInstance.auth.GoogleAuthProvider();
     } else if (name === "github") {
       provider = new firebaseInstance.auth.GithubAuthProvider();
     }
-    await authService.signInWithPopup(provider);
+    authService.signInWithPopup(provider);
   };
   return (
     <div>

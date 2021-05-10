@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { dbService } from "myBase";
+import { dbService, storageService } from "myBase";
 
 const Twitt = ({ twittObj, isOwner }) => {
   //에디팅 모드인지 아닌지 true / false 값 가리기
@@ -11,9 +11,11 @@ const Twitt = ({ twittObj, isOwner }) => {
     const ok = window.confirm("정말 이 Twitt을 삭제하시겠습니까?");
     if (ok) {
       await dbService.doc(`twitts/${twittObj.id}`).delete();
+      await storageService.refFromURL(twittObj.attachmentUrl).delete();
     }
   };
   const toggleEditing = () => setEditing((prev) => !prev);
+
   const onSubmit = async (event) => {
     event.preventDefault();
     await dbService.doc(`twitts/${twittObj.id}`).update({
@@ -47,6 +49,9 @@ const Twitt = ({ twittObj, isOwner }) => {
       ) : (
         <>
           <h4>{twittObj.text}</h4>
+          {twittObj.attachmentUrl && (
+            <img src={twittObj.attachmentUrl} width="200px" height="200px" />
+          )}
           {isOwner && (
             <>
               <button onClick={onDeleteClick}>Delete Twitt</button>
